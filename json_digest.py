@@ -15,7 +15,7 @@ def get_json_strings(prefix='mv'):
     json_collection = []
 
     for fl in target_files:
-        with open(os.path.join(src_path, fl), 'rb') as f:
+        with open(os.path.join(SRC_PATH, fl), 'rb') as f:
             json_str = f.readlines()
         json_collection.extend(json_str)
     return json_collection
