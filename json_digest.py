@@ -60,7 +60,7 @@ parser = argprase.ArgumentParse(description = 'json ingestion library')
 parser.add_argument('--prefix', help = 'file prefix that we will be searching for ')
 args = parser.parse_args()
 
-if __name__ ='__main__':
+if __name__ == '__main__':
     js_str = get_json_strings(args.prefix)
     js_stats = json_digest(js_str)
     write_statsfile(js_stats, args.prefix)
