@@ -52,7 +52,7 @@ def json_digest(json_strs):
 
 def write_statsfile(stat_strs, prefix):
     print "writing to file..."
-    with open(os.join(SRC_PATH, '%s.txt' % prefix,'wb')) as f:
+    with open(os.path.join(SRC_PATH, '%s.txt' % prefix,'wb')) as f:
         f.write('\n'.join(stat_strs))
 
 
