@@ -56,7 +56,7 @@ def write_statsfile(stat_strs, prefix):
         f.write('\n'.join(stat_strs))
 
 
-parser = argprase.ArgumentParse(description = 'json ingestion library')
+parser = argparse.ArgumentParse(description = 'json ingestion library')
 parser.add_argument('--prefix', help = 'file prefix that we will be searching for ')
 args = parser.parse_args()
 
