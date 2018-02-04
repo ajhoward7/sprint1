@@ -1,9 +1,10 @@
 import json
 import os
+import argparse
 
 SRC_PATH = '/srv/runme'
 
-def get_json_strings(client, prefix='mv'):
+def get_json_strings(prefix='mv'):
     """
     mean to be run locally on the server
     this allows the use of the OS library for easy of 
@@ -46,9 +47,20 @@ def json_digest(json_strs):
                     
             except Exception as e:
                 print(e)
-    
+    print "%d valid jsons found" % len(return_stats)
     return return_stats
 
 def write_statsfile(stat_strs, prefix):
+    print "writing to file..."
     with open(os.join(SRC_PATH, '%s.txt' % prefix,'wb')) as f:
         f.write('\n'.join(stat_strs))
+
+
+parser = argprase.ArgumentParse(description = 'json ingestion library')
+parser.add_argument('--prefix', help = 'file prefix that we will be searching for ')
+args = parser.parse_args()
+
+if __name__ ='__main__':
+    js_str = get_json_strings(args.prefix)
+    js_stats = json_digest(js_str)
+    write_statsfile(js_stats, args.prefix)
