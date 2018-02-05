@@ -50,6 +50,7 @@ def json_digest(json_strs):
     print "%d valid jsons found" % len(return_stats)
     return return_stats
 
+
 def write_statsfile(stat_strs, prefix):
     print "writing to file..."
     with open(os.path.join(SRC_PATH, '%s.txt' % prefix),'wb') as f:
