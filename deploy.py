@@ -15,7 +15,7 @@ def connect(key_url, server_url, username='ec2-user'):
     c = paramiko.SSHClient()
     c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     print "connected to %s " % server_url
-    c.connect(hostname = server, username = username)
+    c.connect(hostname = server, username = username, pkey = k)
     return c
 
 
@@ -64,13 +64,13 @@ def update_crontab(client, prefix):
         
 
 def clean_up(client):
-	client.exec_command('rm -r ~/sprint1')
+    client.exec_command('rm -r ~/sprint1')
 
 
 def deploy(key_url, server_url, prefix):
-	c = connect(key_url, server_url)
-	git_pull(c)
-	update_crontab(c, prefix)
+    c = connect(key_url, server_url)
+    git_pull(c)
+    update_crontab(c, prefix)
 
 
 parser = argparse.ArgumentParser(description = 'json ingestion library')
@@ -82,19 +82,16 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
 
-	with open('/Users/timlee/Dropbox/keys/sprint_key.txt','rb') as f:
-		server_url, key_url = f.read().split(',') 
+    if args.k is not None:
+        key_url = args.k
 
-	if args.k is not None:
-		key_url = args.k
+    if args.s is not None:
+        server_url = args.s
 
-	if args.s is not None:
-		server_url = args.s
+    if args.p is not None:
+        prefix = args.p
+    else:
+        prefix = 'ppp'
 
-	if args.p is not None:
-		prefix = args.p
-	else:
-		prefix = 'ppp'
-
-		
-	deploy(key_url, server_url, prefix)
+        
+    deploy(key_url, server_url, prefix)
