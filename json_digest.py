@@ -63,6 +63,9 @@ parser.add_argument('--prefix', help = 'file prefix that we will be searching fo
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    js_str = get_json_strings(args.prefix)
-    js_stats = json_digest(js_str)
-    write_statsfile(js_stats, args.prefix)
+    if args.prefix is not None:
+        js_str = get_json_strings(args.prefix)
+        js_stats = json_digest(js_str)
+        write_statsfile(js_stats, args.prefix)
+    else:
+        print 'please enter a search phrase for file names with --prefix'
