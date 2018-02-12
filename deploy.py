@@ -30,9 +30,18 @@ def git_pull(client):
     """
     git clones a directory
     """
+    _, stdout, _ = client.exec_command("ls ~/")
+    files = stdout.read()
+    
     try:
-        client.exec_command("cd ~/; git clone https://github.com/ajhoward7/sprint1.git")
-        print 'repository created'
+        if 'sprint1' in files:
+            stdin,stdout,stderr = client.exec_command("cd ~/sprint1; git pull")        
+            print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+            print 'repository repulled'
+        else:
+            stdin,stdout,stderr = client.exec_command("cd ~/; git clone https://github.com/ajhoward7/sprint1.git")        
+            print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+            print 'repository created'
     except Exception as e:
         print e
 
@@ -52,6 +61,7 @@ def deploy(key_url, server_url, prefix):
     c = connect(key_url, server_url)
     git_pull(c)
     update_crontab(c, prefix)
+    c.close()
 
 
 parser = argparse.ArgumentParser(description = 'json ingestion library')
