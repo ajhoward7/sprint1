@@ -26,20 +26,6 @@ def get_timestamp():
     return time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
 
 
-def check_log(client):
-    msg = 'opened connection at %s' % get_timestamp()    
-    while True:
-        _, stdout, _ = client.exec_command('cat flock_log.log | wc -l')
-        line_count = int(stdout.read().split('\n')[0])
-        if line_count % 2 == 0:
-            print "%d Logs found" % line_count
-            client.exec_command("echo %s > flock_log.log" % msg )
-            break
-        print "..."
-        time.sleep(10)
-    print "no other connections"
-
-
 def git_pull(client):
     """
     git clones a directory
@@ -56,15 +42,10 @@ def update_crontab(client, prefix):
     msg = '* * * * * python /home/ec2-user/sprint1/json_digest.py'
     try:
         client.exec_command('crontab -r')
-        #client.exec_command('crontab -l | {cat; echo "%s"; } | crontab -' % msg)
         client.exec_command('(crontab -l 2>/dev/null; echo "*/5 * * * * python /home/ec2-user/sprint1/json_digest.py --prefix %s") | crontab -' % prefix)
         print 'cron tab updated'
     except Exception as e:
-        print(e)
-        
-
-def clean_up(client):
-    client.exec_command('rm -r ~/sprint1')
+        print(e)        
 
 
 def deploy(key_url, server_url, prefix):
@@ -81,17 +62,28 @@ args = parser.parse_args()
 
 
 if __name__ == '__main__':
+    valid = True
+    msg = []
 
     if args.k is not None:
         key_url = args.k
+    else:
+        valid = False
+        msg.append("please provide location of key with '-k'")
 
     if args.s is not None:
         server_url = args.s
+    else:
+        valid = False
+        msg.append("please provide service host with '-s'")
 
     if args.p is not None:
         prefix = args.p
     else:
-        prefix = 'ppp'
-
-        
-    deploy(key_url, server_url, prefix)
+        valid = False
+        msg.append("please file prefix to search '-p'")
+    
+    if valid:
+        deploy(key_url, server_url, prefix)
+    else:
+        print '\n'.join(msg)
