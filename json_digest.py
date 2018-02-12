@@ -11,7 +11,7 @@ def get_json_strings(prefix='mv'):
     file access
     """
     files = os.listdir(SRC_PATH)
-    target_files = [x for x in files if x.startswith(prefix) and x.endswith("json")]
+    target_files = [x for x in files if x.startswith(prefix) and x != "%s.txt" %  prefix]
     json_collection = []
 
     for fl in target_files:
