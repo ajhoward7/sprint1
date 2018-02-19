@@ -1,5 +1,25 @@
-### Sprint2 Library: 
+# Sprint2 Library: 
 
+*Team SELECT STARS: Alex Howard, Patrick Yang, Jade Yun, Tim Lee*
+
+## Architecture
+```
+"""
+# -------------#
+# -------------#
+# ----LAPTOP---#
+# -------------#   ----> deploy.py -->  # -------------#
+# -------------#                        # -------------#
+        |                               # -------------#
+       deploy.py                        # --WEBSERVER--#
+        |                               # -------------#
+# -------------#  ---> JSON POSTS ->    # -------------#
+# -------------#                        # -------------#
+# -TEST SERVER-#                            - processes valid json
+# -------------#                            - logs 
+# -------------#                            - records locally
+"""
+```
 
 #### How to run:
 ```python

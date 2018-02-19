@@ -60,4 +60,3 @@ def deploy(key_url, server_url, prefix):
     update_crontab(c, prefix)
     print "script successfully deployed"
     c.close()
-
