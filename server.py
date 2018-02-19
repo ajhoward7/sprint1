@@ -18,12 +18,11 @@ logger.addHandler(handler)
 @app.route('/', methods=['GET', 'POST'])
 def parse_request():
     data = request.json  # Take JSON data from HTTP
-    print data
-    #data = " ".join(data.split("\n"))  # remove hard returns
+    data = " ".join(data.split("\n"))  # remove hard returns
 
     logger.info(data)  # log
 
-    return "Here, have some HTML in return %s\n" % str(data)
+    return "Here, have some HTML in return\n"
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080)
