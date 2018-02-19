@@ -52,7 +52,8 @@ def connect(key_url, server_url, username='testtest'):
     # return an abstracted client
     return c
 
-def get_code_repo(client):
+
+def install_code_repo(client, deploy_repo='https://github.com/ajhoward7/sprint1.git'):
     """
     Input: a ssh connection, designed around a paramiko object
     Function will do the following:
@@ -61,20 +62,48 @@ def get_code_repo(client):
     3. if already pulled, will re-pull with 'git pull' for latest version
 
     """
+    install_folder = deploy_repo.split('/')[-1].split(.git)[0]
+
     _, stdout, _ = client.exec_command("ls ~/")
     files = stdout.read()
     
     try:
         if 'sprint1' in files:
-            stdin,stdout,stderr = client.exec_command("cd ~/sprint1; git pull")        
+            stdin,stdout,stderr = client.exec_command("cd ~/%s; git pull" % install_folder)        
             print 'repository repulled'
         else:
-            stdin,stdout,stderr = client.exec_command("cd ~/; git clone https://github.com/ajhoward7/sprint1.git")        
+            stdin,stdout,stderr = client.exec_command("cd ~/; git clone %s" % deploy_repo )        
             print 'repository created'
 
         print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
     except Exception as e:
         print e
+
+
+def install_crontab(client, crontab_str):
+    """
+    Input: 
+    - client : a paramiko ssh client
+    - crontab_str : a crontab string to be installed on the server
+
+    # previous "*/5 * * * * python /home/testtest/sprint1/json_digest.py --prefix %s"
+
+    Tries to install a crontab string on the server
+    """
+    print "initializing crontab script"
+    
+    try:
+        stdin,stdout,stderr = client.exec_command('crontab -r')
+        print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+
+        stdin,stdout,stderr = client.exec_command('(crontab -l 2>/dev/null; echo "%s") | crontab -' % crontab_str)
+        print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+        print 'cron tab updated'
+    except Exception as e:
+        print(e)        
+
+
+
 
         
 def start_webserver(client, prefix):
@@ -83,6 +112,7 @@ def start_webserver(client, prefix):
     run the web_server.py to star the service
     """
     print "webservice started"
+
 
 def test_webserver_connection(web_url):
     """
