@@ -8,6 +8,8 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def parse_request():
     data = request.json
+    data = " ".join(data.split("\n"))  # remove hard returns
+
     logger = logging.getLogger("Rotating Log")
     logger.setLevel(logging.INFO)
     handler = TimedRotatingFileHandler("test.log",
