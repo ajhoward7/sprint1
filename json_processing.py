@@ -20,7 +20,7 @@ def valid_json(json_str):
 			return False, "Empty string"
 
 		# convert to json
-		json_v = json.loads(line)
+		json_v = json.loads(json_str)
 		return True, json_v
 
 	except Exception as e:
