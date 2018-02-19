@@ -41,7 +41,7 @@ deploy('path_to_ssh_private_key.pem', 'server-address','prefix')
 
 
 #### Testing service:
-- Web API server: accepts web `POST` requests
+- Server #2 will test server #1 by sending repeated JSON posts
 - Test Send Server: generate and send good and bad jsons 
 
 #### [Reference PDF](Sprint2.pdf)
@@ -54,10 +54,10 @@ deploy('path_to_ssh_private_key.pem', 'server-address','prefix')
 
 |Task | Assignment|
 |-----------| ----|
-|retrofit deploy| ----|
-|write the webpaths for requests| ----|
-|logging of web requestes| ----|
-|create test server (to send)| ----|
+|retrofit deploy| Tim|
+|write the webpaths for requests| Alex|
+|logging of web requestes| Patrick|
+|create test server (to send)| Jade|
 
 
 #### Notes:
