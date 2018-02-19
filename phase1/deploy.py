@@ -45,7 +45,7 @@ def git_pull(client):
         
 def update_crontab(client, prefix):
     print "initializing crontab script for '%s'" % prefix
-    msg = '* * * * * python /home/ec2-user/sprint1/json_digest.py'
+    
     try:
         client.exec_command('crontab -r')
         client.exec_command('(crontab -l 2>/dev/null; echo "*/5 * * * * python /home/testtest/sprint1/json_digest.py --prefix %s") | crontab -' % prefix)

@@ -8,6 +8,7 @@
 # ===============================================================
 
 import paramiko
+import requests
 import sys
 
 """
@@ -56,11 +57,13 @@ def connect(key_url, server_url, username='testtest'):
 def install_code_repo(client, deploy_repo='https://github.com/ajhoward7/sprint1.git'):
     """
     Input: a ssh connection, designed around a paramiko object
+
     Function will do the following:
     1. check to see if the repo exists
     2. if not, pulls for first time with 'git clone'
     3. if already pulled, will re-pull with 'git pull' for latest version
 
+    Defaults to the main repo, but can be reset for a different folder, or different repo
     """
     install_folder = deploy_repo.split('/')[-1].split(.git)[0]
 
@@ -103,8 +106,6 @@ def install_crontab(client, crontab_str):
         print(e)        
 
 
-
-
         
 def start_webserver(client, prefix):
     """
@@ -119,6 +120,8 @@ def test_webserver_connection(web_url):
     input : web_url : STRING - the url of where the webserver is running
     performs simple web test to ensure that web service is running
     """
+    resp = requests.get(web_url)
+    
     print "Webservice is running"
 
 
