@@ -54,6 +54,19 @@ def connect(key_url, server_url, username='testtest'):
     return c
 
 
+def client_bash(client, command, verbose=True):
+    """
+    small wrapper for ssh client calls, always want to print
+    console in and console errors, will save from printing 
+    every single time
+    """
+    stdin,stdout,stderr = client.exec_command(command)        
+    
+    if verbose:
+        print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+    return client
+
+
 def install_code_repo(client, deploy_repo='https://github.com/ajhoward7/sprint1.git'):
     """
     Input: a ssh connection, designed around a paramiko object
@@ -72,13 +85,17 @@ def install_code_repo(client, deploy_repo='https://github.com/ajhoward7/sprint1.
     
     try:
         if 'sprint1' in files:
-            stdin,stdout,stderr = client.exec_command("cd ~/%s; git pull" % install_folder)        
+            client_bash(client, "cd ~/%s; git pull" % install_folder)        
+            client_bash(client, "cd ~/%s; git checkout tims_dev" % install_folder) # DELETE LATER - for testing
+            client_bash(client, "cd ~/%s; git branch" % install_folder) # DELETE LATER - for testing
             print 'repository repulled'
         else:
-            stdin,stdout,stderr = client.exec_command("cd ~/; git clone %s" % deploy_repo )        
+            client_bash(client,"cd ~/; git clone %s" % deploy_repo )
+            client_bash(client, "cd ~/%s; git checkout tims_dev" % install_folder) # DELETE LATER - for testing
+            client_bash(client, "cd ~/%s; git branch" % install_folder) # DELETE LATER - for testing
             print 'repository created'
 
-        print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+        
     except Exception as e:
         print e
 
@@ -96,11 +113,8 @@ def install_crontab(client, crontab_str):
     print "initializing crontab script"
     
     try:
-        stdin,stdout,stderr = client.exec_command('crontab -r')
-        print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
-
-        stdin,stdout,stderr = client.exec_command('(crontab -l 2>/dev/null; echo "%s") | crontab -' % crontab_str)
-        print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+        client_bash(client,'crontab -r')
+        client_bash(client,'crontab -l 2>/dev/null; echo "%s") | crontab -' % crontab_str)
         print 'cron tab updated'
     except Exception as e:
         print(e)        
@@ -112,7 +126,9 @@ def start_webserver(client, prefix):
     Assuming the appropriate repo has been installed
     run the web_server.py to star the service
     """
+    client_bash(client, 'cd ~/sprint1;python dev_server.py -p 8080')
     print "webservice started"
+
 
 
 def test_webserver_connection(web_url):
@@ -139,6 +155,6 @@ def deploy(key_url, server_url, prefix):
     """
     c = connect(key_url, server_url)
     install_code_repo(c)
-    print "script successfully deployed"
+    start_webserver(c,'xxx')
     c.close()
 

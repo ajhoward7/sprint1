@@ -19,6 +19,20 @@ class MainHandler(tornado.web.RequestHandler):
     	"""
         self.write("This is the welcome screen")
 
+
+class StatusHandler(tornado.web.RequestHandler):
+    def get(self):
+        """
+        Should provide a default welcome service (README)
+        will provide the proper way to submit data
+        """
+        self.write("JSON Nibbler is UP!")
+        self.set_status(200)
+
+    def head(self)
+        self.set_status(200)        
+
+
 class PostHandler(tornado.web.RequestHandler):
     def get(self):
     	"""
@@ -36,6 +50,7 @@ class PostHandler(tornado.web.RequestHandler):
 
 def make_app():
     return tornado.web.Application([
+        (r"/", StatusHandler),
         (r"/", MainHandler),
         (r"/submit", PostHandler),
     ])
