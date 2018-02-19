@@ -35,6 +35,12 @@ def valid_json_format(json_v):
 		- age is an int
 	- check to make sure that the name exists
 	"""
+
+	# checks for name fields
+	name = json_v.get('name')
+	if name is None:
+		return False
+
 	# check 'prop field'
 	props = json_v.get('prop')
 	if props  is None:
@@ -50,11 +56,6 @@ def valid_json_format(json_v):
 		return False
 
 	if age < 0:
-		return False
-
-	# checks for name fields
-	name = props.get('name')
-	if name is None:
 		return False
 
 	# if all conditions are passed
