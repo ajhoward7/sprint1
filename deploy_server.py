@@ -126,7 +126,7 @@ def start_webserver(client, prefix):
     Assuming the appropriate repo has been installed
     run the web_server.py to star the service
     """
-    client_bash(client, 'cd ~/sprint1;python dev_server.py -p 8080')
+    client_bash(client, 'cd ~/sprint1;gunicorn -D --threads 4 -b 0.0.0.0:8080 --access-logfile server.log --timeout 60 server:app')
     print "webservice started"
 
 
@@ -153,8 +153,13 @@ def deploy(key_url, server_url, prefix):
     2. < installs some code >
     3. < 
     """
+    print "connect to server"
     c = connect(key_url, server_url)
+
+    print "install git repo"
     install_code_repo(c)
-    start_webserver(c,'xxx')
+    #start_webserver(c,'xxx')
+    
+    print "closing connection"
     c.close()
 
