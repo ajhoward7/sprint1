@@ -1,6 +1,5 @@
 import tornado.ioloop
 import tornado.web
-import argparse
 from json_processing import *
 
 """
@@ -17,21 +16,21 @@ class MainHandler(tornado.web.RequestHandler):
 		Should provide a default welcome service (README)
 		will provide the proper way to submit data
     	"""
-        self.write("This is the welcome screen")
+        self.write("Hello, world")
 
 class PostHandler(tornado.web.RequestHandler):
     def get(self):
     	"""
 		Should provide a default message, (please POST to this service)
     	"""
-        self.write("This is how you submit jsons")
+        self.write("Hello, world")
 
     def post(self):
     	"""
 		make sure to get the data from the post
     	"""
     	data = self.request.body
-        self.write("you've written a json")	
+        self.write("Hello, world")	
 	
 
 def make_app():
@@ -41,10 +40,6 @@ def make_app():
     ])
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = 'webserver framework')
-    parser.add_argument('-p', help = 'port we will run server as', default=7777)
-    args = parser.parse_args()
-
     app = make_app()
-    app.listen(args.p)
+    app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
