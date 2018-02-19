@@ -65,7 +65,7 @@ def install_code_repo(client, deploy_repo='https://github.com/ajhoward7/sprint1.
 
     Defaults to the main repo, but can be reset for a different folder, or different repo
     """
-    install_folder = deploy_repo.split('/')[-1].split(.git)[0]
+    install_folder = deploy_repo.split('/')[-1].split('.git')[0]
 
     _, stdout, _ = client.exec_command("ls ~/")
     files = stdout.read()
@@ -120,9 +120,14 @@ def test_webserver_connection(web_url):
     input : web_url : STRING - the url of where the webserver is running
     performs simple web test to ensure that web service is running
     """
-    resp = requests.get(web_url)
-    
-    print "Webservice is running"
+    try:
+        resp = requests.get(web_url)
+        if resp.status_code == 200:
+            print "Webservice is running"
+        else:
+            print "Webservice status: %s" %resp.status_code
+    except Exception as e:
+        print(e)
 
 
 def deploy(key_url, server_url, prefix):
@@ -133,7 +138,7 @@ def deploy(key_url, server_url, prefix):
     3. < 
     """
     c = connect(key_url, server_url)
-    get_code_repo(c)
+    install_code_repo(c)
     print "script successfully deployed"
     c.close()
 
