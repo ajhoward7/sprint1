@@ -158,4 +158,3 @@ def deploy(key_url, server_url, prefix):
     install_code_repo(c)
     start_webserver(c,'xxx')
     c.close()
-
