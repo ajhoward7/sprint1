@@ -37,33 +37,41 @@ def valid_json_format(json_v):
 	"""
 
 	# checks for name fields
+	err_msg = []
+
 	name = json_v.get('name')
 	if name is None:
+		err_msg.append('name not available')
 		return False
 
 	# check 'prop field'
 	props = json_v.get('prop')
-	if props  is None:
+	if props is None:
+		err_msg.append('prop key not available')
 		return False
 
 	# check age field
 	age = props.get('age')
 	if age is None:
+		err_msg.append('age is missing')
 		return False
 
 	# check proper age formatting
-	if type(age) != int:
+	if type(age) not in [int,float]:
+		err_msg.append('non numeric age')
 		return False
 
 	if age < 0:
+		err_msg.append('age too small')
 		return False
 
+	if len(err_msg) > 0:
+		print ','.join(err_msg)
 	# if all conditions are passed
 	return True
 
 
-
-def extract_fields(json_strs):
+def extract_fields(json_str):
     """
     takes in an array of json strings and converts them to
     actual json. Some notes:
@@ -74,25 +82,38 @@ def extract_fields(json_strs):
     unicode, otherwise the python json library will also
     have a similiarly difficult time with it
     """
+
+    # checks if valid
+    json_check, data = valid_json(json_str)
+    if not json_check:
+    	print 'Not valid json format'
+    	return None
+
+    # checks json data format
+    if not valid_json_format(data):
+    	print 'missing name or age fields'
+    	return None
+
+    name = data['name'].decode('utf-8','ignore')
+    age = data['prop']['age']
+    return name + '\t' + str(age)
+
+
+def batch_extract(json_strs):
+    """
+    Pulls out valid names and ages from a list of json strs
+    """
     names_and_ages = []
 
     # goes through input strings
     for json_item in json_strs:
-        # checks if valid
-        json_check, data = valid_json(json_item)
-        if json_check:
 
-    		# checks json data format
-    		if valid_json_format(data):
-    			row = []
-    			# extracts data
-    			for field in ['age','prop']:
-    				row.append(data[field])
-    			names_and_ages.append(row)
-    		else:
-    			print 'missing name or age fields'
-    	else:
-	    	print data
+    	# pull fields out
+    	row = extract_fields(json_item)
+
+    	# if populated then store
+    	if row:
+    		names_and_ages.append(row)
 
     print "%d valid jsons found" % len(names_and_ages)
     return names_and_ages
