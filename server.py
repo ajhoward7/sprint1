@@ -31,7 +31,7 @@ def test_connection():
 
 @app.route('/shutdown')
 def shutdown():
-    subprocess.call("pkill gunicorn")
+    subprocess.call("ls")
 
 #if __name__ == "__main__":
 #    app.run(host='0.0.0.0', port=8080)
