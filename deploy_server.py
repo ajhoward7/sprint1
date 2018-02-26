@@ -103,8 +103,8 @@ def start_webserver(client, prefix):
     Assuming the appropriate repo has been installed
     run the web_server.py to star the service
     """
-    _, stdout, stderr = client_bash(client, 'cd ~/sprint1;gunicorn -D --threads 4 -b 0.0.0.0:8080 json_catcher_server:app %s' % prefix)
-    print '\n'.join(stdout.readlines()), '\n'.join(stderr.readlines())
+    bash_cmd = 'cd ~/sprint1;gunicorn -D --threads 4 -b 0.0.0.0:8080 json_catcher_server:app %s' % prefix
+    client_bash(client, bash_cmd, verbose=True)
     print "web server started"
 
 

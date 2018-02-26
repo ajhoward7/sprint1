@@ -27,7 +27,7 @@ GET http://json_server/shutdown - will shut down server remotely, even if runnin
     on either Flask or Gunicorn
 """
 
-DIR_PATH = './'
+DIR_PATH = '/srv/runme/'
 
 app = Flask(__name__)
 i = sys.argv.index('json_catcher_server:app')
