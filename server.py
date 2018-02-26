@@ -1,4 +1,5 @@
 from flask import Flask, request
+import subprocess
 
 import logging
 from logging.handlers import TimedRotatingFileHandler
@@ -30,6 +31,7 @@ def test_connection():
 
 @app.route('/shutdown')
 def shutdown():
+    subprocess.call("pkill gunicorn")
     shutdown_server()
     return 'Server shutting down...'
 
