@@ -10,20 +10,30 @@
 # ----LAPTOP---#
 # -------------#   ----> deploy.py -->  # -------------#
 # -------------#                        # -------------#
-        |                               # -------------#
+        |                               # -----AWS-----#
        deploy.py                        # --WEBSERVER--#
         |                               # -------------#
 # -------------#  ---> JSON POSTS ->    # -------------#
 # -------------#                        # -------------#
 # -TEST SERVER-#                            - processes valid json
-# -------------#                            - logs 
-# -------------#                            - records locally
+# -------------#                            - logs all requests RAW
+# -------------#                            - records locally in PROC
 """
 ```
 
 #### How to run:
 ```python
 deploy('path_to_ssh_private_key.pem', 'server-address','prefix')
+```
+#### Files
+```
+|- archive_old_versions/			# our earlier prototypes/ different platforms
+|- phase1/ 							# our simple json processing program
+|- sample_json_generator/ 			# scripts to simulate input data coming in
+|--- deploy_server.py				# main deployment python script
+|--- json_catcher_server.py		# does what it says, catches jsons
+|--- json_processing.py				# lib to validate and extract data from json
+|--- stop_remote_aws_server.py	# stops the server on AWS
 ```
 
 #### Deployment Specifications:
