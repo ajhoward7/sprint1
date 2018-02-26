@@ -31,7 +31,7 @@ def test_connection():
 
 @app.route('/shutdown')
 def shutdown():
-    subprocess.call("pkill gunicorn")
+    subprocess.call("pkill gunicorn", shell = True)
     return "Hi"
 
 #if __name__ == "__main__":
