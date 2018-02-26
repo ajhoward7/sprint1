@@ -86,38 +86,14 @@ def install_code_repo(client, deploy_repo='https://github.com/ajhoward7/sprint1.
     try:
         if 'sprint1' in files:
             client_bash(client, "cd ~/%s; git pull" % install_folder)        
-            client_bash(client, "cd ~/%s; git checkout tims_dev" % install_folder) # DELETE LATER - for testing
-            client_bash(client, "cd ~/%s; git branch" % install_folder) # DELETE LATER - for testing
             print 'repository repulled'
         else:
             client_bash(client,"cd ~/; git clone %s" % deploy_repo )
-            client_bash(client, "cd ~/%s; git checkout tims_dev" % install_folder) # DELETE LATER - for testing
-            client_bash(client, "cd ~/%s; git branch" % install_folder) # DELETE LATER - for testing
             print 'repository created'
-
         
     except Exception as e:
         print e
 
-
-def install_crontab(client, crontab_str):
-    """
-    Input: 
-    - client : a paramiko ssh client
-    - crontab_str : a crontab string to be installed on the server
-
-    # previous "*/5 * * * * python /home/testtest/sprint1/json_digest.py --prefix %s"
-
-    Tries to install a crontab string on the server
-    """
-    print "initializing crontab script"
-    
-    try:
-        client_bash(client,'crontab -r')
-        client_bash(client,'crontab -l 2>/dev/null; echo "%s") | crontab -' % crontab_str)
-        print 'cron tab updated'
-    except Exception as e:
-        print(e)        
 
 
         
@@ -127,7 +103,7 @@ def start_webserver(client, prefix):
     run the web_server.py to star the service
     """
     print "webservice starting"
-    client_bash(client, 'cd ~/sprint1;gunicorn -D --threads 4 -b 0.0.0.0:8080 --access-logfile server.log --timeout 60 server:app')
+    client_bash(client, 'cd ~/sprint1;python json_catcher_server.py --prefix %s' % prefix)
     print "webservice started"
 
 
@@ -158,3 +134,4 @@ def deploy(key_url, server_url, prefix):
     install_code_repo(c)
     start_webserver(c,'xxx')
     c.close()
+
