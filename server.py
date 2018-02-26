@@ -19,7 +19,6 @@ logger.addHandler(handler)
 @app.route('/', methods=['GET', 'POST'])
 def parse_request():
     data = request.json  # Take JSON data from HTTP
-    data = " ".join(data.split("\n"))  # remove hard returns
 
     logger.info(data)  # log
 
