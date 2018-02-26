@@ -26,15 +26,15 @@
 deploy('path_to_ssh_private_key.pem', 'server-address','prefix')
 ```
 #### Files
-```
-|- archive_old_versions/			# our earlier prototypes/ different platforms
-|- phase1/ 							# our simple json processing program
-|- sample_json_generator/ 			# scripts to simulate input data coming in
-|--- deploy_server.py				# main deployment python script
-|--- json_catcher_server.py		# does what it says, catches jsons
-|--- json_processing.py				# lib to validate and extract data from json
-|--- stop_remote_aws_server.py	# stops the server on AWS
-```
+|file/dir | desc|
+|-----------| ----|
+|`archive_old_versions/`| Previous prototype versions on different platforms|
+|`phase1/`| All of sprint1's work, simple remote json processing |
+|`sample_json_generator/`| scripts to generate synthetic json input data|
+|`deploy_server.py`| deploy the `json_catcher` to aws|
+|`json_processing.py`| utilities to validate incoming json and extract data|
+|`json_catcher_server.py`| JSON ingestion web API built on flask|
+|`stop_remote_aws_server.py`| stop the `json_catcher` remotely|
 
 #### Deployment Specifications:
 - Remotely deploys this repo to a AWS instance
