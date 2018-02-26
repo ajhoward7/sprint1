@@ -103,9 +103,8 @@ def start_webserver(client, prefix):
     Assuming the appropriate repo has been installed
     run the web_server.py to star the service
     """
-    print "webservice starting"
-    client_bash(client, 'cd ~/sprint1;python json_catcher_server.py --prefix %s' % prefix)
-    print "webservice started"
+    client_bash(client, 'cd ~/sprint1;gunicorn -D --threads 4 -b 0.0.0.0:8080 json_catcher_server:app --prefix %s' % prefix)
+    print "web server started"
 
 
 
@@ -131,10 +130,14 @@ def deploy(key_url, server_url, prefix):
     2. < installs some code >
     3. < 
     """
-    c = connect(key_url, server_url)
-    install_code_repo(c)
-    start_webserver(c, prefix)
-    c.close()
+    try:
+        c = connect(key_url, server_url)
+        install_code_repo(c)
+        start_webserver(c, prefix)
+        c.close()
+
+    except KeyboardInterrupt:
+        requests.get(server_url+':8080/shutdown')
 
 if __name__ == '__main__':
     deploy('/Users/timlee/Dropbox/keys/chaffixdevkey.pem', 'ec2-35-166-134-236.us-west-2.compute.amazonaws.com','ggg')
