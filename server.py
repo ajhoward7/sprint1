@@ -24,5 +24,14 @@ def parse_request():
 
     return "Here, have some HTML in return\n"
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)
+@app.route('/test')
+def test_connection():
+    return "Server running!\n"
+
+@app.route('/stop')
+def stop_server():
+    # stop server
+    return "Server stopped"
+
+#if __name__ == "__main__":
+#    app.run(host='0.0.0.0', port=8080)
