@@ -85,7 +85,8 @@ def install_code_repo(client, deploy_repo='https://github.com/ajhoward7/sprint1.
     
     try:
         if 'sprint1' in files:
-            client_bash(client, "cd ~/%s; git pull" % install_folder)        
+            client_bash(client, "cd ~/%s; git pull" % install_folder)       
+            #client_bash(client, "cd ~/%s; git checkout master" % install_folder)  # DELETE LATER - for testing 
             print 'repository repulled'
         else:
             client_bash(client,"cd ~/; git clone %s" % deploy_repo )
@@ -132,6 +133,8 @@ def deploy(key_url, server_url, prefix):
     """
     c = connect(key_url, server_url)
     install_code_repo(c)
-    start_webserver(c,'xxx')
+    start_webserver(c, prefix)
     c.close()
 
+if __name__ == '__main__':
+    deploy('/Users/timlee/Dropbox/keys/chaffixdevkey.pem', 'ec2-35-166-134-236.us-west-2.compute.amazonaws.com','ggg')

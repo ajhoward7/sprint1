@@ -120,8 +120,7 @@ def assign_handlers(app):
         """
         Used for testing if the server is up, returns simple message
         """
-        print "prefix", app.config.get('prefix')
-        return "Server running!\n"
+        return "Server running! Prefix: %s \n" % app.config.get('prefix')
 
 
     @app.route('/shutdown')
