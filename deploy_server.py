@@ -10,6 +10,7 @@
 import paramiko
 import requests
 import sys
+import subprocess
 
 """
 These are all the connection libraries related to deploying code
@@ -124,6 +125,14 @@ def test_webserver_connection(web_url):
         print(e)
 
 
+def check_url_exists(url):
+    try:
+        resp = requests.get(url)
+        return resp.status_code == 200
+    except:
+        return False
+
+
 def deploy(key_url, server_url, prefix):
     """
     This is the main deploy script that does the following:
@@ -131,6 +140,16 @@ def deploy(key_url, server_url, prefix):
     2. < installs some code >
     3. < 
     """
+    status_url = 'http://%s:8080/test' % server_url
+    
+    if check_url_exists(status_url):
+        print "server already running, stopping then reinstalling"
+        try:
+            resp = requests.get('http://%s:8080/shutdown' % server_url)
+        except:
+            # request will error out since server shuts down
+            pass
+
     try:
         c = connect(key_url, server_url)
         install_code_repo(c)
