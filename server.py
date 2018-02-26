@@ -28,12 +28,16 @@ def parse_request():
 def test_connection():
     return "Server running!\n"
 
-@app.route('/stop')
 def shutdown_server():
-    # stop server
     func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
     func()
-    return "Server shutting down...."
+
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
 
 #if __name__ == "__main__":
 #    app.run(host='0.0.0.0', port=8080)
