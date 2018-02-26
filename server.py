@@ -29,9 +29,11 @@ def test_connection():
     return "Server running!\n"
 
 @app.route('/stop')
-def stop_server():
+def shutdown_server():
     # stop server
-    return "Server stopped"
+    func = request.environ.get('werkzeug.server.shutdown')
+    func()
+    return "Server shutting down...."
 
 #if __name__ == "__main__":
 #    app.run(host='0.0.0.0', port=8080)
