@@ -159,5 +159,3 @@ def deploy(key_url, server_url, prefix):
     except KeyboardInterrupt:
         requests.get(server_url+':8080/shutdown')
 
-if __name__ == '__main__':
-    deploy('/Users/timlee/Dropbox/keys/testtest_key.pem', 'ec2-35-166-134-236.us-west-2.compute.amazonaws.com','zzz')
