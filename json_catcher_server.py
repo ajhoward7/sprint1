@@ -31,16 +31,8 @@ DIR_PATH = '/srv/runme/'
 
 app = Flask(__name__)
 i = sys.argv.index('json_catcher_server:app')
-
-try:
-    prefix = sys.argv[i+1] # e.g.,
-    target_path = DIR_PATH + prefix + '/'
-except:
-    print "prefix not provided"
-    sys.exit()
-
-if not os.path.isdir(DIR_PATH):
-    sys.exit()
+prefix = sys.argv[i+1] # e.g.,
+target_path = DIR_PATH + prefix + '/'
 
 print target_path
 if not os.path.isdir(target_path):
