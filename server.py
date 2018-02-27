@@ -63,7 +63,7 @@ def create_logger(logger_name, log_file_path):
     print "created logging file at %s" % log_file_path
     return logger
 
-raw_logger = create_logger('raw logger', target_path + 'raw.txt')
+raw_logger = create_logger('raw logger', target_path + 'Raw.txt')
 proc_logger = create_logger('proc logger', target_path  + 'proc.txt')
 
 app.config['prefix'] = prefix
