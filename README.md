@@ -15,25 +15,49 @@
         |                               # -------------#
 # -------------#  ---> JSON POSTS ->    # -------------#
 # -------------#                        # -------------#
-# -TEST SERVER-#                            - processes valid json
+# -TEST SERVER-#                            - Runs server.py
+# -------------#                            - processes valid json
 # -------------#                            - logs all requests RAW
-# -------------#                            - records locally in PROC
+												    - records locally in PROC
 """
 ```
 
 #### How to run:
+
+Here is an example of how to deploy the server
+
 ```python
 deploy('path_to_ssh_private_key.pem', 'server-address','prefix')
+
+connected to ec2-35-166-134-236.us-west-2.compute.amazonaws.com
+Already up-to-date.
+repository repulled
+web server started
 ```
+
+#### How to stop:
+
+Since gunicorn is running in the background, here's an easy way to terminate the server remotely.
+
+```python
+
+python stop_aws_server.py server-address
+
+	>checking for server ec2-35-166-134-236.us-west-2.compute.amazonaws.com
+	>server already running, stopping
+
+```
+
+
 #### Files
 |file/dir | desc|
 |-----------| ----|
 |`archive_old_versions/`| Previous prototype versions on different platforms|
 |`phase1/`| All of sprint1's work, simple remote json processing |
 |`sample_json_generator/`| scripts to generate synthetic json input data|
-|`deploy_server.py`| deploy the `json_catcher` to aws|
+|`deploy.py`| deploy the `json_catcher` to aws|
 |`json_processing.py`| utilities to validate incoming json and extract data|
-|`json_catcher_server.py`| JSON ingestion web API built on flask|
+|`server.py`| JSON ingestion web API built on flask|
 |`stop_remote_aws_server.py`| stop the `json_catcher` remotely|
 
 #### Deployment Specifications:
