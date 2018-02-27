@@ -104,7 +104,7 @@ def start_webserver(client, prefix):
     Assuming the appropriate repo has been installed
     run the web_server.py to star the service
     """
-    bash_cmd = 'cd ~/sprint1;gunicorn -D --threads 4 -b 0.0.0.0:8080 server_draft_tim:app %s' % prefix
+    bash_cmd = 'cd ~/sprint1;gunicorn -D --threads 4 -b 0.0.0.0:8080 server:app %s' % prefix
     client_bash(client, bash_cmd, verbose=True)
     print "web server started"
 
@@ -160,4 +160,4 @@ def deploy(key_url, server_url, prefix):
         requests.get(server_url+':8080/shutdown')
 
 if __name__ == '__main__':
-    deploy('/Users/timlee/Dropbox/keys/chaffixdevkey.pem', 'ec2-35-166-134-236.us-west-2.compute.amazonaws.com','zzz')
+    deploy('/Users/timlee/Dropbox/keys/testtest_key.pem', 'ec2-35-166-134-236.us-west-2.compute.amazonaws.com','zzz')

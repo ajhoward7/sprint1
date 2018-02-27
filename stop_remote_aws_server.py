@@ -6,9 +6,9 @@ Simple python program used to stop remote JSON Catcher servers
 """
 
 def check_url_exists(url):
-	"""
-	Checks if server is up
-	"""
+    """
+    Checks if server is up
+    """
     try:
         resp = requests.get(url)
         return resp.status_code == 200
