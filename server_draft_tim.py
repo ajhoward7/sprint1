@@ -30,21 +30,9 @@ GET http://json_server/shutdown - will shut down server remotely, even if runnin
 DIR_PATH = '/srv/runme/'
 
 app = Flask(__name__)
-i = sys.argv.index('json_catcher_server:app')
+app.config['prefix'] = 'ggg'
 
-try:
-    prefix = sys.argv[i+1] # e.g.,
-    target_path = DIR_PATH + prefix + '/'
-except:
-    print "prefix not provided"
-    sys.exit()
-
-if not os.path.isdir(DIR_PATH):
-    sys.exit()
-
-print target_path
-if not os.path.isdir(target_path):
-    os.mkdir(target_path)
+target_path = DIR_PATH + 'ggg/'
 
 
 #################################################################
