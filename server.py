@@ -2,7 +2,8 @@ from flask import Flask, request
 import subprocess
 from json_processing import extract_fields
 import logging
-import os, sys
+import os
+import sys
 import argparse
 from logging.handlers import TimedRotatingFileHandler
 
@@ -21,17 +22,17 @@ to be stored.
 
 MAIN paths:
 
-POST http://json_server/ 
+POST http://json_server/
 GET http://json_server/test  - will return a note if its running
-GET http://json_server/shutdown - will shut down server remotely, even if running
-    on either Flask or Gunicorn
+GET http://json_server/shutdown - will shut down server remotely, even
+if running on either Flask or Gunicorn
 """
 
 DIR_PATH = '/srv/runme/'
 
 app = Flask(__name__)
 i = sys.argv.index('server:app')
-prefix = sys.argv[i+1] # e.g.,
+prefix = sys.argv[i+1]  # e.g.,
 target_path = DIR_PATH + prefix + '/'
 
 print target_path
@@ -64,7 +65,7 @@ def create_logger(logger_name, log_file_path):
     return logger
 
 raw_logger = create_logger('raw logger', target_path + 'Raw.txt')
-proc_logger = create_logger('proc logger', target_path  + 'proc.txt')
+proc_logger = create_logger('proc logger', target_path + 'proc.txt')
 
 app.config['prefix'] = prefix
 app.config['raw_logger'] = raw_logger
@@ -82,27 +83,28 @@ app.config['proc_logger'] = proc_logger
 def parse_request():
     """
     Take JSON data from HTTP
-    
     using request.data, because request.json will crash the server
+
     if the POST request is not formatted correctly
     to be more robust, will take in data as a string and verify the
     content type
-    
-    Note that the json_processing.EXTRACT_FIELDS function will do None and '' handling in strings
+
+    Note that the json_processing.EXTRACT_FIELDS function will do None
+    and '' handling in strings
     """
 
     # catch any post request and log, regardless of validity
     raw_logger = app.config['raw_logger']
     proc_logger = app.config['proc_logger']
 
-    data = request.data  
+    data = request.data
     raw_logger.info(data)  # log
 
     # Check content type before parsing
     content_type = request.headers['Content-Type']
     if content_type != 'application/json':
         return "Incorrect payload type, please submit 'application/json'"
-    
+
     # using json_processing library
     name_and_age = extract_fields(data)
 
@@ -129,11 +131,11 @@ def test_connection():
 def shutdown():
     """
     Used for shutting down the server remotely. This calls the underlying
-    platform and forces a shutdown. 
-    
+    platform and forces a shutdown.
+
     # subprocess.call("pkill gunicorn", shell = True)
     """
-    
+
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:
         # if running on gunicorn
@@ -142,4 +144,3 @@ def shutdown():
         # if running python server.py (using werkzeug)
         func()
     return "Process shutting down..."
-
